@@ -13,6 +13,12 @@ const HeroRegister = () => {
         setSuccess('');
         const email = e.target.email.value;
         const password = e.target.password.value;
+        
+        if(password.length<6) {
+            setRegisterError("Password should be at least 6 characters or long");
+            return;
+        }
+
         createUserWithEmailAndPassword(auth,email,password)
         .then(res=>{ 
             console.log(res.user);
@@ -38,13 +44,13 @@ const HeroRegister = () => {
                                 <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
-                                <input type="email" placeholder="email" className="input input-bordered" name="email" />
+                                <input type="email" placeholder="email" className="input input-bordered" name="email" required />
                             </div>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input type="password" placeholder="password" className="input input-bordered" name="password" />
+                                <input type="password" placeholder="password" className="input input-bordered" name="password" required />
                                 <label className="label">
                                     <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>
