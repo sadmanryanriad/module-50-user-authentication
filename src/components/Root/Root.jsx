@@ -5,7 +5,9 @@ const Root = () => {
     return (
         <div>
             <NavBar></NavBar>
+            <div className="w-full flex justify-center">
             <Outlet></Outlet>
+            </div>
         </div>
     );
 };
