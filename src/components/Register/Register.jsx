@@ -1,9 +1,17 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import auth from "../../firebase/firebase.config";
 
 const Register = () => {
 
     const handleSubmit = e =>{
         e.preventDefault();
-        console.log(e.target.email.value);
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+        createUserWithEmailAndPassword(auth, email, password)
+        .then(res =>{
+            console.log(res.user);
+        })
+        .catch(error=> console.error(error));
     }
 
     return (
@@ -12,7 +20,7 @@ const Register = () => {
             <form onSubmit={handleSubmit}>
                 <input className="border mb-3 py-1 pl-3 pr-28 rounded-lg" type="email" placeholder="Email address" name="email" />
                 <br />
-                <input className="border mb-3 py-1 pl-3 pr-28 rounded-lg" type="text" placeholder="Password" name="password" />
+                <input className="border mb-3 py-1 pl-3 pr-28 rounded-lg" type="password" placeholder="Password" name="password" />
                 <br />
                 <input className="btn btn-secondary text-white w-1/2" type="submit"  />
                 <br />
