@@ -1,30 +1,68 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
+import { useState } from "react";
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const Register = () => {
 
-    const handleSubmit = e =>{
+    const [registerError, setRegisterError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [show, setShow] = useState(false);
+
+    const handleSubmit = e => {
         e.preventDefault();
+        setRegisterError('');
+        setSuccess('');
+
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const accept = e.target.terms.checked;
+
+        if (password.length < 6) {
+            setRegisterError('Password should be at least 6 characters or long');
+            return;
+        }
+        else if (!/[A-Z]/.test(password)) {
+            setRegisterError('Password should have at least one upper case character!');
+            return;
+        }
+        else if (!accept) {
+            setRegisterError('Please accept terms and conditions!');
+            return;
+        }
+
         createUserWithEmailAndPassword(auth, email, password)
-        .then(res =>{
-            console.log(res.user);
-        })
-        .catch(error=> console.error(error));
+            .then(res => {
+                console.log(res.user);
+                setSuccess('User created successfully');
+            })
+            .catch(error => {
+                setRegisterError(error.message);
+                console.error(error)
+            });
     }
 
     return (
         <div className="">
             <h2 className="text-3xl mb-10 text-center">Register</h2>
             <form onSubmit={handleSubmit}>
-                <input className="border mb-3 py-1 pl-3 pr-28 rounded-lg" type="email" placeholder="Email address" name="email" />
+                <input className="border mb-3 py-1 pl-3 pr-28 rounded-lg" type="email" placeholder="Email address" name="email" required />
                 <br />
-                <input className="border mb-3 py-1 pl-3 pr-28 rounded-lg" type="password" placeholder="Password" name="password" />
+                <div className="flex gap-2 ">
+                    <input className="border mb-3 py-1 pl-3 pr-28 rounded-lg" type={show ? "text" : "password"} placeholder="Password" name="password" required /> <span onClick={() => setShow(!show)} className="text-2xl">{show ? <AiFillEyeInvisible></AiFillEyeInvisible> : <AiFillEye></AiFillEye>}</span>
+                </div>
+                <div className="text-sm flex items-center gap-2">
+                    <input type="checkbox" name="terms" />
+                    <label htmlFor="terms">Accept our <a href="">terms & conditions</a></label>
+                </div>
                 <br />
-                <input className="btn btn-secondary text-white w-1/2" type="submit"  />
+                <input className="btn btn-secondary text-white w-1/2" type="submit" />
                 <br />
             </form>
+            <div className="max-w-[80%]">
+            {registerError && <p className="text-red-600">{registerError}</p>}
+            {success && <p className="text-green-600">{success}</p>}
+            </div>
         </div>
     );
 };
