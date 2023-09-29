@@ -1,11 +1,12 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import { useRef, useState } from "react";
 import auth from "../../firebase/firebase.config";
 import { Link } from "react-router-dom";
 
 const Login = () => {
     const [registerError, setRegisterError] = useState('');
     const [success,setSuccess] = useState('');
+    const emailRef = useRef(null);
 
     function handleSubmit(e){
         e.preventDefault();
@@ -35,6 +36,22 @@ const Login = () => {
 
     }
 
+    function handleForgotPassword(){
+        setRegisterError('');
+        setSuccess('');
+        
+        const email = emailRef.current.value;
+
+        sendPasswordResetEmail(auth,email)
+        .then(()=>{
+            setSuccess('Email sent with password reset link')
+        })
+        .catch(error=>{
+            console.log(error.message);
+            setRegisterError(error.message);
+        })
+    }
+
     return (
         <div className="hero min-h-screen w-1/2 ">
             <div className="hero-content flex-col lg:flex-row-reverse">
@@ -49,7 +66,7 @@ const Login = () => {
                                 <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
-                                <input type="email" placeholder="email" className="input input-bordered" name="email" required />
+                                <input ref={emailRef} type="email" placeholder="email" className="input input-bordered" name="email" required />
                             </div>
                             <div className="form-control">
                                 <label className="label">
@@ -60,7 +77,7 @@ const Login = () => {
                                     <Link className="hover:underline" to={'/register'}>New user? Register</Link>
                                 </label>
                                 <label className="label">
-                                    <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                    <a onClick={handleForgotPassword} href="#" className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>
                             </div>
                             <div className="form-control mt-6">

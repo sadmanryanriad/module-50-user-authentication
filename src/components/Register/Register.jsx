@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
-import { useState } from "react";
+import {  useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { Link } from "react-router-dom";
 
