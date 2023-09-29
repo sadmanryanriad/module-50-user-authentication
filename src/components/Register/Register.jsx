@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 import { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { Link } from "react-router-dom";
 
 const Register = () => {
 
@@ -51,12 +52,13 @@ const Register = () => {
                 <div className="flex gap-2 ">
                     <input className="border mb-3 py-1 pl-3 pr-28 rounded-lg" type={show ? "text" : "password"} placeholder="Password" name="password" required /> <span onClick={() => setShow(!show)} className="text-2xl">{show ? <AiFillEyeInvisible></AiFillEyeInvisible> : <AiFillEye></AiFillEye>}</span>
                 </div>
-                <div className="text-sm flex items-center gap-2">
+                <div className="text-sm flex items-center gap-2 mb-3">
                     <input type="checkbox" name="terms" />
                     <label htmlFor="terms">Accept our <a href="">terms & conditions</a></label>
                 </div>
+                <Link to={'/login'} className="text-sm hover:underline">Already has account? Login</Link>
                 <br />
-                <input className="btn btn-secondary text-white w-1/2" type="submit" />
+                <input className="btn btn-secondary text-white w-1/2 mt-4" type="submit" />
                 <br />
             </form>
             <div className="max-w-[80%]">
